@@ -35,6 +35,8 @@ public class BottomMenuBarElement {
         paint.setColor(Color.WHITE);
         String newOptionStr = adjustedString(paint);
         canvas.drawText(newOptionStr,-paint.measureText(newOptionStr)/2,paint.getTextSize()/2,paint);
+        paint.setColor(Color.BLACK);
+        canvas.drawLine(-w/3,h/2-h/9,w/3,h/2-h/9,paint);
         canvas.restore();
     }
     public String adjustedString(Paint paint) {
