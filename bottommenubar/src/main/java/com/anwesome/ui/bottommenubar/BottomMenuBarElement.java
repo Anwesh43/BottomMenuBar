@@ -61,7 +61,13 @@ public class BottomMenuBarElement {
         if(scale>=1.4f) {
             dir = 0;
             scale = 0;
+            if(onMenuClickListener!=null) {
+                onMenuClickListener.onMenuClick();
+            }
         }
+    }
+    public boolean stop() {
+        return dir == 0;
     }
     public interface OnMenuClickListener {
         void onMenuClick();
