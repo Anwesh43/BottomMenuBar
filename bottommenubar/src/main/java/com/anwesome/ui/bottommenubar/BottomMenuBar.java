@@ -18,6 +18,7 @@ public class BottomMenuBar {
     private BottomActionButton bottomActionButton;
     private BottomMenuBarView bottomMenuBarView;
     private boolean isShown = false;
+    private AnimationController animationController;
     private List<BottomMenuBarElement> bottomMenuBarElementList = new ArrayList<>();
     public BottomMenuBar(Activity activity) {
         this.activity = activity;
@@ -46,6 +47,13 @@ public class BottomMenuBar {
                 bottomMenuBarView.setY(9*h/10-h/20);
                 bottomMenuBarView.setScaleX(0);
                 bottomMenuBarView.setScaleY(0);
+                animationController = new AnimationController(bottomActionButton,bottomMenuBarView,w,h);
+                bottomActionButton.setOnButtonClickListener(new BottomActionButton.OnButtonClickListener() {
+                    @Override
+                    public void onButtonClick() {
+                        animationController.toggle();
+                    }
+                });
             }
         }
     }

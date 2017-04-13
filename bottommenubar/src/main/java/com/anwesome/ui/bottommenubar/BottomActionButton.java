@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -17,9 +18,13 @@ public class BottomActionButton extends View {
     private float deg = 0,gap =0;
     private int time = 0;
     private boolean opened = false;
+    private OnButtonClickListener onButtonClickListener;
     private AnimationQueue animationQueue = new AnimationQueue();
     public BottomActionButton(Context context) {
         super(context);
+    }
+    public void setOnButtonClickListener(OnButtonClickListener onButtonClickListener) {
+        this.onButtonClickListener = onButtonClickListener;
     }
     public void onDraw(Canvas canvas) {
         final int w = canvas.getWidth(),h = canvas.getHeight();
@@ -69,6 +74,12 @@ public class BottomActionButton extends View {
         }
         time++;
     }
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN && onButtonClickListener!=null) {
+            onButtonClickListener.onButtonClick();
+        }
+        return true;
+    }
     public void opening() {
         if(!opened) {
             animationQueue.animate(1);
@@ -100,5 +111,8 @@ public class BottomActionButton extends View {
                 }
             }
         }
+    }
+    public interface OnButtonClickListener {
+        void onButtonClick();
     }
 }
