@@ -29,17 +29,17 @@ public class BottomActionButton extends View {
     public void onDraw(Canvas canvas) {
         final int w = canvas.getWidth(),h = canvas.getHeight();
         if(time == 0) {
-            gap = w/3;
+            gap = w/4;
             animationQueue.addAnimationHandler(new AnimationHandler() {
                 @Override
                 public void onAnimate(int dir) {
-                    gap-=dir*w/9;
+                    gap-=dir*w/20;
 
                 }
 
                 @Override
                 public boolean isDone() {
-                    return (gap>=w/3 && gap<=0);
+                    return (gap>=w/4 || gap<=0);
                 }
             });
             animationQueue.addAnimationHandler(new AnimationHandler() {
@@ -66,8 +66,8 @@ public class BottomActionButton extends View {
             canvas.rotate(deg*rotDir[i]);
             for(int j=0;j<3;j++) {
                 canvas.save();
-                canvas.translate(0,(1-i)*gap);
-                canvas.drawLine(-w/3,0,w/3,0,paint);
+                canvas.translate(0,(i-1)*gap);
+                canvas.drawLine(-w/4,0,w/4,0,paint);
                 canvas.restore();
             }
             canvas.restore();
@@ -86,6 +86,9 @@ public class BottomActionButton extends View {
             postInvalidate();
         }
     }
+    public void reset() {
+        animationQueue.reset();
+    }
     public void closing() {
         if(opened) {
             animationQueue.animate(1);
@@ -98,16 +101,28 @@ public class BottomActionButton extends View {
     }
     private class AnimationQueue {
         private int index = 0;
+        private boolean done = false;
         private List<AnimationHandler> animationHandlers = new ArrayList<>();
         public void addAnimationHandler(AnimationHandler animationHandler) {
             this.animationHandlers.add(animationHandler);
         }
+        public void reset() {
+            done = false;
+        }
         public void animate(int dir) {
-            while((dir == -1 && index >0) || (dir == 1&& index<animationHandlers.size())) {
+            if(!done && (dir == -1 && index >= 0) || (dir == 1&& index<animationHandlers.size())) {
                 AnimationHandler animationHandler = animationHandlers.get(index);
                 animationHandler.onAnimate(dir);
                 if(animationHandler.isDone()) {
                     index += dir;
+                    if(index<0 && dir == -1) {
+                        index = 0;
+                        done = true;
+                    }
+                    if(index>=animationHandlers.size() && dir == 1) {
+                        index = animationHandlers.size()-1;
+                        done = true;
+                    }
                 }
             }
         }

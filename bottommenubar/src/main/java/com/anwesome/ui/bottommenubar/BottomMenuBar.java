@@ -40,9 +40,11 @@ public class BottomMenuBar {
                 isShown = true;
                 int w = size.x,h = size.y*9/10;
                 activity.addContentView(bottomMenuBarView,new ViewGroup.LayoutParams(w/2,h/20*(bottomMenuBarElementList.size())));
-                activity.addContentView(bottomActionButton,new ViewGroup.LayoutParams(w/10,w/10));
-                bottomActionButton.setX(9*w/10);
-                bottomActionButton.setY(9*h/10);
+                activity.addContentView(bottomActionButton,new ViewGroup.LayoutParams(w/8,w/8));
+                bottomActionButton.setX(w-w/8);
+                bottomActionButton.setY(9*h/10-w/16);
+                bottomMenuBarView.setPivotX(bottomMenuBarView.getMeasuredWidth());
+                bottomMenuBarView.setPivotY(bottomMenuBarView.getMeasuredHeight());
                 bottomMenuBarView.setX(9*w/10-w/20);
                 bottomMenuBarView.setY(9*h/10-h/20);
                 bottomMenuBarView.setScaleX(0);

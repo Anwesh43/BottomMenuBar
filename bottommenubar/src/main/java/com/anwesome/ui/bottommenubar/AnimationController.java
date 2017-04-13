@@ -39,7 +39,7 @@ public class AnimationController implements ValueAnimator.AnimatorUpdateListener
 
     }
     public void onAnimationEnd(Animator animator) {
-
+        bottomActionButton.reset();
     }
     public void onAnimationCancel(Animator animator) {
 
@@ -51,16 +51,17 @@ public class AnimationController implements ValueAnimator.AnimatorUpdateListener
 
     }
     public void toggle() {
+        float origY = 9*h/10-h/20;
         ValueAnimator valueAnimator = null;
+        dir*=-1;
         if(dir == 1) {
-            valueAnimator = ValueAnimator.ofFloat(h-h/10,h-h/10-menuBarView.getMeasuredHeight());
-            dir = -1;
+            valueAnimator = ValueAnimator.ofFloat(origY,origY-menuBarView.getMeasuredHeight());
+
         }
         else if(dir == -1) {
-            valueAnimator = ValueAnimator.ofFloat(h-h/10-menuBarView.getMeasuredHeight(),h-h/10);
-            dir = 1;
+            valueAnimator = ValueAnimator.ofFloat(origY-menuBarView.getMeasuredHeight(),origY);
         }
-        valueAnimator.setDuration(500);
+        valueAnimator.setDuration(1000);
         valueAnimator.addUpdateListener(this);
         valueAnimator.addListener(this);
         valueAnimator.start();

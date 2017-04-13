@@ -24,29 +24,37 @@ public class BottomMenuBarView extends View {
         this.bottomMenuBarElements = bottomMenuBarElements;
     }
     public void onDraw(Canvas canvas) {
-
-        for(BottomMenuBarElement bottomMenuBarElement:bottomMenuBarElements) {
-            bottomMenuBarElement.draw(canvas,paint);
-        }
-        if(isAnimated) {
-            for(BottomMenuBarElement element:elements) {
-                element.update();
-                if(element.stop()) {
-                    elements.remove(element);
-                    if(elements.size() == 0) {
-                        isAnimated = false;
-                    }
+        int w = canvas.getWidth(),h = canvas.getHeight();
+        if(bottomMenuBarElements.size()>0) {
+            int gap = h/bottomMenuBarElements.size(),y = 0;
+            if (time == 0) {
+                for (BottomMenuBarElement bottomMenuBarElement : bottomMenuBarElements) {
+                    bottomMenuBarElement.setDimension(y,w,gap);
+                    y+=gap;
                 }
             }
-            try {
-                Thread.sleep(50);
-                invalidate();
+            for (BottomMenuBarElement bottomMenuBarElement : bottomMenuBarElements) {
+                bottomMenuBarElement.draw(canvas, paint);
             }
-            catch (Exception ex) {
+            time++;
+            if (isAnimated) {
+                for (BottomMenuBarElement element : elements) {
+                    element.update();
+                    if (element.stop()) {
+                        elements.remove(element);
+                        if (elements.size() == 0) {
+                            isAnimated = false;
+                        }
+                    }
+                }
+                try {
+                    Thread.sleep(50);
+                    invalidate();
+                } catch (Exception ex) {
 
+                }
             }
         }
-
     }
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -57,6 +65,7 @@ public class BottomMenuBarView extends View {
                         isAnimated = true;
                         postInvalidate();
                     }
+                    break;
                 }
             }
         }
