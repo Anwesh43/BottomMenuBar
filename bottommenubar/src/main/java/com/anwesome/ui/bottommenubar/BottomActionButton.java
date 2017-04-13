@@ -71,12 +71,14 @@ public class BottomActionButton extends View {
     }
     public void opening() {
         if(!opened) {
-
+            animationQueue.animate(1);
+            postInvalidate();
         }
     }
-    public void close() {
+    public void closing() {
         if(opened) {
-
+            animationQueue.animate(1);
+            postInvalidate();
         }
     }
     private interface AnimationHandler {
