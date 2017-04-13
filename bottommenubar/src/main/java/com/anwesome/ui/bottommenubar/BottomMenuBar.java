@@ -39,14 +39,20 @@ public class BottomMenuBar {
                 display.getRealSize(size);
                 isShown = true;
                 int w = size.x,h = size.y*9/10;
-                activity.addContentView(bottomMenuBarView,new ViewGroup.LayoutParams(w/2,h/14*(bottomMenuBarElementList.size())));
+                activity.addContentView(bottomMenuBarView,new ViewGroup.LayoutParams(Math.min(w,h)/2,Math.max(w,h)/14*(bottomMenuBarElementList.size())));
                 activity.addContentView(bottomActionButton,new ViewGroup.LayoutParams(w/8,w/8));
                 bottomActionButton.setX(w-w/8);
-                bottomActionButton.setY(9*h/10-w/16);
+                if(w>h) {
+                    bottomActionButton.setY(4*h/5-w/16);
+                    bottomMenuBarView.setY(4*h/5-h/20);
+                }
+                else {
+                    bottomActionButton.setY(9 * h / 10 - w / 16);
+                    bottomMenuBarView.setY(9*h/10-h/20);
+                }
                 bottomMenuBarView.setPivotX(bottomMenuBarView.getMeasuredWidth());
                 bottomMenuBarView.setPivotY(bottomMenuBarView.getMeasuredHeight());
                 bottomMenuBarView.setX(9*w/10-w/20);
-                bottomMenuBarView.setY(9*h/10-h/20);
                 bottomMenuBarView.setScaleX(0);
                 bottomMenuBarView.setScaleY(0);
                 animationController = new AnimationController(bottomActionButton,bottomMenuBarView,w,h);
