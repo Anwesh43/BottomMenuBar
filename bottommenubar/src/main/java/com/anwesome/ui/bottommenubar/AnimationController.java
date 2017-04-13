@@ -19,10 +19,10 @@ public class AnimationController implements ValueAnimator.AnimatorUpdateListener
     }
     public void onAnimationUpdate(ValueAnimator valueAnimator) {
         if(dir == 1) {
-            bottomActionButton.closing();
+            bottomActionButton.changeShape(valueAnimator.getAnimatedFraction());
         }
         else if(dir == -1) {
-            bottomActionButton.opening();
+            bottomActionButton.changeShape(1-valueAnimator.getAnimatedFraction());
         }
         menuBarView.setY((float)valueAnimator.getAnimatedValue());
 
@@ -39,7 +39,6 @@ public class AnimationController implements ValueAnimator.AnimatorUpdateListener
 
     }
     public void onAnimationEnd(Animator animator) {
-        bottomActionButton.reset();
     }
     public void onAnimationCancel(Animator animator) {
 
@@ -61,7 +60,7 @@ public class AnimationController implements ValueAnimator.AnimatorUpdateListener
         else if(dir == -1) {
             valueAnimator = ValueAnimator.ofFloat(origY-menuBarView.getMeasuredHeight(),origY);
         }
-        valueAnimator.setDuration(1000);
+        valueAnimator.setDuration(500);
         valueAnimator.addUpdateListener(this);
         valueAnimator.addListener(this);
         valueAnimator.start();

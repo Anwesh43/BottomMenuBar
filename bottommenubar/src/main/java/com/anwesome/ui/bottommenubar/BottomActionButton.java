@@ -15,11 +15,10 @@ import java.util.List;
  */
 public class BottomActionButton extends View {
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private float deg = 0,gap =0;
+    private float deg = 0,gap =0,maxDeg = 45,maxGap = 0,gap_factor = 5;
     private int time = 0;
     private boolean opened = false;
     private OnButtonClickListener onButtonClickListener;
-    private AnimationQueue animationQueue = new AnimationQueue();
     public BottomActionButton(Context context) {
         super(context);
     }
@@ -29,30 +28,8 @@ public class BottomActionButton extends View {
     public void onDraw(Canvas canvas) {
         final int w = canvas.getWidth(),h = canvas.getHeight();
         if(time == 0) {
-            gap = w/4;
-            animationQueue.addAnimationHandler(new AnimationHandler() {
-                @Override
-                public void onAnimate(int dir) {
-                    gap-=dir*w/20;
-
-                }
-
-                @Override
-                public boolean isDone() {
-                    return (gap>=w/4 || gap<=0);
-                }
-            });
-            animationQueue.addAnimationHandler(new AnimationHandler() {
-                @Override
-                public void onAnimate(int dir) {
-                    deg+=dir*9;
-                }
-
-                @Override
-                public boolean isDone() {
-                    return (deg>=45 || deg<=0);
-                }
-            });
+            gap = w/gap_factor;
+            maxGap = gap;
         }
         paint.setColor(BottomMenuBarConstants.viewColor);
         canvas.drawCircle(w/2,h/2,w/2,paint);
@@ -66,7 +43,7 @@ public class BottomActionButton extends View {
             canvas.rotate(deg*rotDir[i]);
             for(int j=0;j<3;j++) {
                 canvas.save();
-                canvas.translate(0,(i-1)*gap);
+                canvas.translate(0,(j-1)*gap);
                 canvas.drawLine(-w/4,0,w/4,0,paint);
                 canvas.restore();
             }
@@ -80,52 +57,14 @@ public class BottomActionButton extends View {
         }
         return true;
     }
-    public void opening() {
-        if(!opened) {
-            animationQueue.animate(1);
-            postInvalidate();
+    public void changeShape(float animfactor) {
+        if(animfactor<=0.5f) {
+            gap = maxGap*((0.5f-animfactor)/0.5f);
         }
-    }
-    public void reset() {
-        animationQueue.reset();
-    }
-    public void closing() {
-        if(opened) {
-            animationQueue.animate(1);
-            postInvalidate();
+        else {
+            deg = maxDeg*((animfactor-0.5f)/0.5f);
         }
-    }
-    private interface AnimationHandler {
-        void onAnimate(int dir);
-        boolean isDone();
-    }
-    private class AnimationQueue {
-        private int index = 0;
-        private boolean done = false;
-        private List<AnimationHandler> animationHandlers = new ArrayList<>();
-        public void addAnimationHandler(AnimationHandler animationHandler) {
-            this.animationHandlers.add(animationHandler);
-        }
-        public void reset() {
-            done = false;
-        }
-        public void animate(int dir) {
-            if(!done && (dir == -1 && index >= 0) || (dir == 1&& index<animationHandlers.size())) {
-                AnimationHandler animationHandler = animationHandlers.get(index);
-                animationHandler.onAnimate(dir);
-                if(animationHandler.isDone()) {
-                    index += dir;
-                    if(index<0 && dir == -1) {
-                        index = 0;
-                        done = true;
-                    }
-                    if(index>=animationHandlers.size() && dir == 1) {
-                        index = animationHandlers.size()-1;
-                        done = true;
-                    }
-                }
-            }
-        }
+        postInvalidate();
     }
     public interface OnButtonClickListener {
         void onButtonClick();
