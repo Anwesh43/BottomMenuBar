@@ -24,11 +24,12 @@ public class BottomMenuBarElement {
     public void draw(Canvas canvas, Paint paint) {
         canvas.save();
         canvas.translate(w/2,h/2);
-        paint.setColor(Color.parseColor("#e53935"));
+        paint.setColor(BottomMenuBarConstants.viewColor);
         canvas.drawRect(new RectF(-w/2,-h/2,w/2,h/2),paint);
         paint.setTextSize(h/3);
         canvas.save();
-        paint.setColor(Color.parseColor("#AAe53935"));
+        int color = BottomMenuBarConstants.viewColor;
+        paint.setColor(Color.argb(100,Color.red(color),Color.green(color),Color.blue(color)));
         canvas.scale(scale,scale);
         canvas.drawRect(new RectF(-w/2,-h/2,w/2,h/2),paint);
         canvas.restore();
