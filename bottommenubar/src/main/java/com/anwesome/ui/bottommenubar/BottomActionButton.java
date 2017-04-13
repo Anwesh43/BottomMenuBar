@@ -60,9 +60,11 @@ public class BottomActionButton extends View {
     public void changeShape(float animfactor) {
         if(animfactor<=0.5f) {
             gap = maxGap*((0.5f-animfactor)/0.5f);
+            deg = 0;
         }
         else {
             deg = maxDeg*((animfactor-0.5f)/0.5f);
+            gap = 0;
         }
         postInvalidate();
     }
