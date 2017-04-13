@@ -36,4 +36,4 @@
 
 ### Screencast of the demo
 
-<img src="https://github.com/Anwesh43/BottomMenuBar/blob/master/screencast/bottommenubar.gif" width="300px" height="600px" alt="Screencast of demo">
+<img src="https://github.com/Anwesh43/BottomMenuBar/blob/master/screencast/bottommenubar2.gif" width="300px" height="600px" alt="Screencast of demo">
